@@ -1,0 +1,5 @@
+﻿{
+  "ConnectionStrings": {
+    "connStr": "Server=.;Database=RepairBuddy;User ID=sa;Password=taseski;"
+  }
+}
