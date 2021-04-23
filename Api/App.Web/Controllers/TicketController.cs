@@ -23,8 +23,8 @@ namespace App.Web.Controllers
         [HttpGet]
         public IActionResult GetAllTickets()
         {
-            var resullt = _ticketService.GetAllTicketsForUser(LoggedInUserId);
-            return Ok(resullt.Payload);
+            var result = _ticketService.GetAllTicketsForUser(LoggedInUserId);
+            return Ok(result.Payload);
         }
 
         [Route("ticket/new")]
