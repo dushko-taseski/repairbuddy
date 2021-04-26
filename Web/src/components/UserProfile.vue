@@ -1,36 +1,28 @@
 <template>
   <div>
-    <nav class="navbar navbar-dark bg-primary">
-      <div class="col-6">
-        <router-link to="/customers">
-          <button class="btn btn-secondary">Go to customers</button>
+    <nav class="navbar navbar-inverse bg-dark text-white pt-3 pb-3">
+      <div class="col-4 navbar-header">
+        <router-link to="/customers"
+          ><h4 class="d-inline-block text-white">RepairBuddy</h4></router-link
+        >
+        <router-link to="/tickets">
+          <h4 class="d-inline-block ml-4 text-white hover-shadow">Tickets</h4>
         </router-link>
       </div>
-      <div class="col-4 d-flex justify-content-end">
-        <h4>Hello {{ user.fullName }}</h4>
-      </div>
-      <div class="col-1">
-        <div class="btn-group d-flex justify-content-end">
-          <button
-            type="button"
-            class="btn btn-secondary dropdown-toggle"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Account
-          </button>
-          <div class="dropdown-menu">
-            <router-link to="/user/profile">
-              <button class="btn btn-secondary w-100">Profile</button>
-            </router-link>
-            <router-link to="/user/login">
-              <button @click="logoutUser" class="btn btn-secondary w-100 mt-1">
-                Log Out
-              </button>
-            </router-link>
-          </div>
-        </div>
+      <div class="col-8 d-flex justify-content-end">
+        <h4 class="mr-5">Hello {{ user.fullName }}</h4>
+        <router-link to="/user/profile">
+          <h4 class="d-inline-block mr-5 text-white">
+            <font-awesome-icon icon="user" /><span class="ml-1">Profile</span>
+          </h4>
+        </router-link>
+        <router-link to="/user/login">
+          <h4 class="d-inline-block text-white">
+            <font-awesome-icon icon="sign-out-alt" /><span class="ml-1"
+              >Log out</span
+            >
+          </h4>
+        </router-link>
       </div>
     </nav>
     <div class="container mt-3 profile">

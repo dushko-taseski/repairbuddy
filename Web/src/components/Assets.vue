@@ -1,57 +1,45 @@
 <template>
   <div>
-    <nav class="navbar navbar-dark bg-primary row">
-      <div class="col-6">
-        <router-link to="/customers">
-          <button class="btn btn-secondary">Go to Customers</button>
+    <nav class="navbar navbar-inverse bg-dark text-white pt-3 pb-3">
+      <div class="col-4 navbar-header">
+        <router-link to="/customers"
+          ><h4 class="d-inline-block text-white">RepairBuddy</h4></router-link
+        >
+        <router-link to="/tickets">
+          <h4 class="d-inline-block ml-4 text-white hover-shadow">Tickets</h4>
         </router-link>
       </div>
-      <div class="col-5 d-flex justify-content-end">
-        <h4>Hello {{ user.fullName }}</h4>
-      </div>
-      <div class="col-1">
-        <div class="btn-group d-flex justify-content-start">
-          <button
-            type="button"
-            class="btn btn-secondary dropdown-toggle"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Account
-          </button>
-          <div class="dropdown-menu">
-            <router-link to="/user/profile">
-              <button class="btn btn-secondary w-100">Profile</button>
-            </router-link>
-            <router-link to="/user/login">
-              <button @click="logoutUser" class="btn btn-secondary w-100 mt-1">
-                Log Out
-              </button>
-            </router-link>
-          </div>
-        </div>
+      <div class="col-8 d-flex justify-content-end">
+        <h4 class="mr-5">Hello {{ user.fullName }}</h4>
+        <router-link to="/user/profile">
+          <h4 class="d-inline-block mr-5 text-white">
+            <font-awesome-icon icon="user" /><span class="ml-1">Profile</span>
+          </h4>
+        </router-link>
+        <router-link to="/user/login">
+          <h4 class="d-inline-block text-white">
+            <font-awesome-icon icon="sign-out-alt" /><span class="ml-1"
+              >Log out</span
+            >
+          </h4>
+        </router-link>
       </div>
     </nav>
-    <div class="row">
-      <div class="col-6">
-        <button class="btn btn-secondary mt-3 mb-3 ml-3" @click="openAddModal">
-          Add New Asset
-        </button>
-        <router-link to="/tickets"
-          ><button class="btn btn-secondary mt-3 mb-3 ml-3 d-inline-block">
-            Tickets
-          </button></router-link
-        >
-      </div>
+    <div style="margin-left: 100px">
+      <button class="btn btn-dark mt-3 mb-3" @click="openAddModal">
+        <font-awesome-icon icon="plus" class="mr-2" />New Asset
+      </button>
     </div>
     <ag-grid-vue
-      style="width: 100%; height: 250px"
       class="ag-theme-alpine"
       :columnDefs="columnDefs"
       :rowData="assetsForCustomer"
       :pagination="true"
-      :paginationPageSize="2"
+      :paginationPageSize="8"
+      :getRowHeight="getRowHeight"
+      :isFullWidthCell="isFullWidthCell"
+      :fullWidthCellRenderer="fullWidthCellRenderer"
+      :defaultColDef="defaultColDef"
     >
     </ag-grid-vue>
     <div v-if="addModal">
@@ -382,7 +370,7 @@ export default {
   beforeMount() {
     this.columnDefs = [
       { field: "serialNumber", sortable: true, filter: true },
-      { field: "name", sortable: true, filter: true, minWidth: 280 },
+      { field: "name", sortable: true, filter: true },
       { field: "description", sortable: true },
       {
         headerName: "Actions",
@@ -390,9 +378,11 @@ export default {
         cellRendererParams: {
           parent: this,
         },
-        minWidth: 270,
       },
     ];
+    this.defaultColDef = {
+      flex: 1,
+    };
   },
 };
 </script>
@@ -413,5 +403,11 @@ export default {
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
+}
+
+.ag-theme-alpine {
+  height: 500px;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 </style>

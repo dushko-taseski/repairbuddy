@@ -1,47 +1,35 @@
 <template>
   <div>
-    <nav class="navbar navbar-dark bg-primary row">
-      <div class="col-6">
-        <h4 class="d-inline-block">RepairBuddy</h4>
-      </div>
-      <div class="col-4 d-flex justify-content-end">
-        <h4>Hello {{ user.fullName }}</h4>
-      </div>
-      <div class="col-1">
-        <div class="btn-group d-flex justify-content-end w-100">
-          <button
-            type="button"
-            class="btn btn-secondary dropdown-toggle"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Account
-          </button>
-          <div class="dropdown-menu">
-            <router-link to="/user/profile">
-              <span class="btn d-block w-100">Profile</span>
-            </router-link>
-            <router-link to="/user/login">
-              <span @click="logoutUser" class="btn w-100 d-block mt-1">
-                Log Out
-              </span>
-            </router-link>
-          </div>
-        </div>
-      </div>
-    </nav>
-    <div class="row">
-      <div class="col-6">
-        <button class="btn btn-secondary mt-3 mb-3 ml-3" @click="openAddModal">
-          Add New Customer
-        </button>
+    <nav class="navbar navbar-inverse bg-dark text-white pt-3 pb-3">
+      <div class="col-4 navbar-header">
+        <router-link to="/customers"
+          ><h4 class="d-inline-block text-white">RepairBuddy</h4></router-link
+        >
         <router-link to="/tickets">
-          <button class="btn btn-secondary mt-3 mb-3 ml-3 d-inline-block">
-            Tickets
-          </button>
+          <h4 class="d-inline-block ml-4 text-white hover-shadow">Tickets</h4>
         </router-link>
       </div>
+      <div class="col-8 d-flex justify-content-end">
+        <h4 class="mr-5">Hello {{ user.fullName }}</h4>
+        <router-link to="/user/profile">
+          <h4 class="d-inline-block mr-5 text-white">
+            <font-awesome-icon icon="user" /><span class="ml-1">Profile</span>
+          </h4>
+        </router-link>
+        <router-link to="/user/login">
+          <h4 class="d-inline-block text-white">
+            <font-awesome-icon icon="sign-out-alt" /><span class="ml-1"
+              >Log out</span
+            >
+          </h4>
+        </router-link>
+      </div>
+    </nav>
+
+    <div style="margin-left: 100px">
+      <button class="btn btn-dark mt-3 mb-3 p-2" @click="openAddModal">
+        <font-awesome-icon icon="user-plus" class="mr-1" /> New Customer
+      </button>
     </div>
     <ag-grid-vue
       class="ag-theme-alpine"
@@ -49,6 +37,10 @@
       :rowData="customers"
       :pagination="true"
       :paginationPageSize="8"
+      :getRowHeight="getRowHeight"
+      :isFullWidthCell="isFullWidthCell"
+      :fullWidthCellRenderer="fullWidthCellRenderer"
+      :defaultColDef="defaultColDef"
     >
     </ag-grid-vue>
     <div v-if="addModal">
@@ -398,8 +390,12 @@ export default {
   },
   beforeMount() {
     this.columnDefs = [
-      { field: "name", sortable: true, filter: true, resizable: true },
-      { field: "email", sortable: true, filter: true, minWidth: 280 },
+      {
+        field: "name",
+        sortable: true,
+        filter: true,
+      },
+      { field: "email", sortable: true, filter: true },
       { field: "address", sortable: true },
       { field: "city", sortable: true },
       { field: "phone" },
@@ -409,9 +405,11 @@ export default {
         cellRendererParams: {
           parent: this,
         },
-        minWidth: 270,
       },
     ];
+    this.defaultColDef = {
+      flex: 1,
+    };
   },
 };
 </script>
@@ -434,7 +432,8 @@ export default {
 }
 
 .ag-theme-alpine {
-  width: 100%;
   height: 500px;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 </style>

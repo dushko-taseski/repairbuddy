@@ -10,7 +10,7 @@
       <font-awesome-icon icon="trash" />
     </button>
     <button
-      class="btn btn-success w-50"
+      class="btn btn-success w-50 mb-1"
       @click="
         clickedTicket = params.parent.getTicket(params.data);
         params.parent.openTicketDetailsModal();
