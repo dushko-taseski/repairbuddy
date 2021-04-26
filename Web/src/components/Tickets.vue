@@ -140,27 +140,19 @@
                     <hr style="border: 1px solid black" />
                     <p><b>Customer Information</b></p>
                     <div class="row">
-                      <div class="col-4 mt-2">
+                      <div class="col-4">
                         <span>Name: </span>
                       </div>
                       <div class="col-8">
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="clickedTicket.asset.customer.name"
-                        />
+                        <span>{{ clickedTicket.asset.customer.name }}</span>
                       </div>
                     </div>
                     <div class="row mt-2">
                       <div class="col-4 mt-2">
                         <span>Email: </span>
                       </div>
-                      <div class="col-8">
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="clickedTicket.asset.customer.email"
-                        />
+                      <div class="col-8 mt-2">
+                        <span>{{ clickedTicket.asset.customer.email }}</span>
                       </div>
                     </div>
                   </div>
@@ -168,15 +160,11 @@
                   <div>
                     <p><b>Asset Information</b></p>
                     <div class="row">
-                      <div class="col-4 mt-2">
+                      <div class="col-4">
                         <span>Serial Number: </span>
                       </div>
                       <div class="col-8">
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="clickedTicket.asset.serialNumber"
-                        />
+                        <span>{{ clickedTicket.asset.serialNumber }}</span>
                       </div>
                     </div>
                   </div>
@@ -184,51 +172,35 @@
                   <div>
                     <p><b>Ticket Information</b></p>
                     <div class="row">
-                      <div class="col-4 mt-2">
+                      <div class="col-4">
                         <span>Description: </span>
                       </div>
                       <div class="col-8">
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="clickedTicket.description"
-                        />
+                        <span>{{ clickedTicket.description }}</span>
                       </div>
                     </div>
                     <div class="row mt-2">
                       <div class="col-4 mt-2">
                         <span>Open date: </span>
                       </div>
-                      <div class="col-8">
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="clickedTicket.dateOpen"
-                        />
+                      <div class="col-8 mt-2">
+                        <span>{{ clickedTicket.dateOpen }}</span>
                       </div>
                     </div>
                     <div class="row mt-2">
                       <div class="col-4 mt-2">
                         <span>Close date: </span>
                       </div>
-                      <div class="col-8">
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="clickedTicket.dateClosed"
-                        />
+                      <div class="col-8 mt-2">
+                        <span>{{ clickedTicket.dateClosed }}</span>
                       </div>
                     </div>
                     <div class="row mt-2">
                       <div class="col-4 mt-2">
                         <span>Ticket Status </span>
                       </div>
-                      <div class="col-8">
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="clickedTicket.ticketStatus"
-                        />
+                      <div class="col-8 mt-2">
+                        <span>{{ clickedTicket.ticketStatus }}</span>
                       </div>
                     </div>
                   </div>
@@ -254,7 +226,7 @@
                         <div class="col-3">
                           <button
                             class="btn btn-danger"
-                            v-if="clickedTicket.ticketStatus == 0"
+                            v-if="clickedTicket.ticketStatus == 'Open'"
                             @click="
                               clickedTicketItem = ticketItem.id;
                               deleteTicketItem();
@@ -271,7 +243,7 @@
                     </div>
                     <div
                       class="row mt-3"
-                      v-if="clickedTicket.ticketStatus == 0"
+                      v-if="clickedTicket.ticketStatus == 'Open'"
                     >
                       <div class="col-5">
                         <input
@@ -386,6 +358,7 @@ export default {
       clickedTicket: null,
       clickedTicketItem: null,
       user: null,
+      errorMessage: null,
       selected: "",
       newTicket: {
         description: "",

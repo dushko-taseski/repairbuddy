@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace App.Entities
 {
@@ -11,6 +12,7 @@ namespace App.Entities
 
         public DateTime DateOpen { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public TicketStatus TicketStatus { get; set; }
 
         public DateTime? DateClosed { get; set; }

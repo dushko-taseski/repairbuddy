@@ -7,28 +7,7 @@
       <div class="col-4 d-flex justify-content-end">
         <h4>Hello {{ user.fullName }}</h4>
       </div>
-      <div
-        class="col-1 btn-group"
-        role="group"
-        aria-label="Button group with nested dropdown"
-      >
-        <div class="btn-group" role="group">
-          <button
-            id="btnGroupDrop1"
-            type="button"
-            class="btn btn-primary dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Dropdown
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-          </ul>
-        </div>
-      </div>
-      <!-- <div class="col-1">
+      <div class="col-1">
         <div class="btn-group d-flex justify-content-end w-100">
           <button
             type="button"
@@ -50,7 +29,7 @@
             </router-link>
           </div>
         </div>
-      </div> -->
+      </div>
     </nav>
     <div class="row">
       <div class="col-6">
@@ -419,7 +398,7 @@ export default {
   },
   beforeMount() {
     this.columnDefs = [
-      { field: "name", sortable: true, filter: true },
+      { field: "name", sortable: true, filter: true, resizable: true },
       { field: "email", sortable: true, filter: true, minWidth: 280 },
       { field: "address", sortable: true },
       { field: "city", sortable: true },
