@@ -18,7 +18,9 @@
         </router-link>
         <router-link to="/user/login">
           <h4 class="d-inline-block text-white">
-            <font-awesome-icon icon="sign-out-alt" /><span class="ml-1"
+            <font-awesome-icon icon="sign-out-alt" /><span
+              @click="logoutUser"
+              class="ml-1"
               >Log out</span
             >
           </h4>
@@ -37,9 +39,6 @@
       :rowData="customers"
       :pagination="true"
       :paginationPageSize="8"
-      :getRowHeight="getRowHeight"
-      :isFullWidthCell="isFullWidthCell"
-      :fullWidthCellRenderer="fullWidthCellRenderer"
       :defaultColDef="defaultColDef"
     >
     </ag-grid-vue>

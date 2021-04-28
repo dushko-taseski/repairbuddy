@@ -18,7 +18,9 @@
         </router-link>
         <router-link to="/user/login">
           <h4 class="d-inline-block text-white">
-            <font-awesome-icon icon="sign-out-alt" /><span class="ml-1"
+            <font-awesome-icon icon="sign-out-alt" /><span
+              class="ml-1"
+              @click="logoutUser"
               >Log out</span
             >
           </h4>

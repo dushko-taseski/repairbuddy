@@ -5,6 +5,9 @@
         <router-link to="/customers"
           ><h4 class="d-inline-block text-white">RepairBuddy</h4></router-link
         >
+        <router-link to="/tickets">
+          <h4 class="d-inline-block ml-4 text-white hover-shadow">Tickets</h4>
+        </router-link>
       </div>
       <div class="col-8 d-flex justify-content-end">
         <h4 class="mr-5">Hello {{ user.fullName }}</h4>
@@ -15,7 +18,9 @@
         </router-link>
         <router-link to="/user/login">
           <h4 class="d-inline-block text-white">
-            <font-awesome-icon icon="sign-out-alt" /><span class="ml-1"
+            <font-awesome-icon icon="sign-out-alt" /><span
+              @click="logoutUser"
+              class="ml-1"
               >Log out</span
             >
           </h4>
@@ -34,9 +39,6 @@
       :rowData="tickets"
       :pagination="true"
       :paginationPageSize="8"
-      :getRowHeight="getRowHeight"
-      :isFullWidthCell="isFullWidthCell"
-      :fullWidthCellRenderer="fullWidthCellRenderer"
       :defaultColDef="defaultColDef"
     >
     </ag-grid-vue>
@@ -53,6 +55,9 @@
                   </button>
                 </div>
                 <div class="modal-body">
+                  <span class="text-danger" v-if="selected == ''">{{
+                    errorCustomerName
+                  }}</span>
                   <select
                     id="select1"
                     v-model="selected"
@@ -68,7 +73,11 @@
                       {{ cust.name }}
                     </option>
                   </select>
+
                   <div id="el">
+                    <span class="text-danger" v-if="newTicket.assetId == ''">{{
+                      errorSerialNumber
+                    }}</span>
                     <select
                       id="select2"
                       class="custom-select"
@@ -105,7 +114,7 @@
                       class="btn btn-primary btn-xs"
                       @click="addNewTicket"
                     >
-                      Create
+                      Save
                     </button>
                   </div>
                 </div>
@@ -130,7 +139,7 @@
                 <div class="modal-body">
                   <div>
                     <hr style="border: 1px solid black" />
-                    <p><b>Customer Information</b></p>
+                    <p><b>Customer Informations</b></p>
                     <div class="row">
                       <div class="col-4">
                         <span>Name: </span>
@@ -162,7 +171,7 @@
                   </div>
                   <hr style="border: 1px solid black" />
                   <div>
-                    <p><b>Ticket Information</b></p>
+                    <p><b>Ticket Informations</b></p>
                     <div class="row">
                       <div class="col-4">
                         <span>Description: </span>
@@ -209,9 +218,9 @@
                         v-for="ticketItem in ticketItems"
                         :key="ticketItem.id"
                       >
-                        <li class="col-6">
-                          {{ ticketItem.description }}
-                        </li>
+                        <div class="col-6">
+                          <li>{{ ticketItem.description }}</li>
+                        </div>
                         <div class="col-3">
                           {{ ticketItem.price }}
                         </div>
@@ -228,10 +237,7 @@
                           </button>
                         </div>
                       </div>
-                      <span
-                        ><b>TotalPrice: </b>
-                        {{ clickedTicket.totalPrice }}</span
-                      >
+                      <span><b>TotalPrice: </b> {{ ticketTotalPrice }}</span>
                     </div>
                     <div
                       class="row mt-3"
@@ -274,7 +280,7 @@
                     </button>
                     <button
                       class="btn btn-primary btn-xs"
-                      v-if="clickedTicket.ticketStatus == 0"
+                      v-if="clickedTicket.ticketStatus == 'Open'"
                       @click="closeTicket"
                     >
                       Close Ticket
@@ -349,8 +355,11 @@ export default {
       ticketItems: null,
       clickedTicket: null,
       clickedTicketItem: null,
+      ticketTotalPrice: null,
       user: null,
       errorMessage: null,
+      errorCustomerName: null,
+      errorSerialNumber: null,
       selected: "",
       newTicket: {
         description: "",
@@ -407,6 +416,9 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.tickets = response.data;
+          this.ticketTotalPrice = this.tickets.find(
+            (ticket) => ticket.id == this.clickedTicket.id
+          ).totalPrice;
         });
     },
     loadUser() {
@@ -426,7 +438,9 @@ export default {
         )
         .then((response) => {
           this.ticketItems = response.data;
-          console.log(this.test);
+          this.ticketTotalPrice = this.tickets.find(
+            (ticket) => ticket.id == this.clickedTicket.id
+          ).totalPrice;
         });
     },
     loadAssetsForCustomer() {
@@ -439,18 +453,30 @@ export default {
         });
     },
     addNewTicket() {
-      axios
-        .post(`http://localhost:8030/ticket/new`, this.newTicket, {
-          withCredentials: true,
-        })
-        .then((response) => {
-          this.addModal = false;
-          this.loadTickets();
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error.response.data);
-        });
+      if (this.newTicket.assetId != "" && this.selected != "") {
+        axios
+          .post(`http://localhost:8030/ticket/new`, this.newTicket, {
+            withCredentials: true,
+          })
+          .then((response) => {
+            this.addModal = false;
+            this.loadTickets();
+            this.newTicket.assetId = "";
+            this.selected = "";
+            this.newTicket.description = "";
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error.response.data);
+          });
+      } else if (this.newTicket.assetId == "" && this.selected == "") {
+        this.errorCustomerName = "Customer name is required!";
+        this.errorSerialNumber = "Serial number is required!";
+      } else if (this.newTicket.assetId == "") {
+        this.errorSerialNumber = "Serial number is required!";
+      } else if (this.selected == "") {
+        this.errorCustomerName = "Customer name is required!";
+      }
     },
     addNewTicketItem() {
       this.newTicketItem.price = Number(this.newTicketItem.price);
